@@ -7,38 +7,6 @@ require_once('vendor/autoload.php');
 
 class ControllerUser{
 
-
-    static public function ControllerSelectOne($id):array{
-
-        $db = new Database();
-
-        $result = $db->selectOne($id);
-        
-        if(!$result){
-            return ["usuario"=>"não encontrado"];
-        }else{
-            return $result;
-        }
-
-    }
-
-
-    static public function ControllerSelect(){
-
-        $db = new Database();
-    
-       $result = $db->select();
-
-        if($result){
-            return $result;
-        }else{
-            return ["usuario"=>"vazio"];
-        }
-
-
-
-    }
-
     static public function ControllerCreate(array $body){
 
         $db = new Database();
@@ -53,6 +21,51 @@ class ControllerUser{
 
     }
 
+    //
+    static public function ControllerSelect(){
+
+        $db = new Database();
+    
+       $result = $db->select();
+
+        if($result){
+            return $result;
+        }else{
+            return ["usuario"=>"vazio"];
+        }
+    }
+
+    //
+    static public function ControllerSelectOne($id):array{
+
+        $db = new Database();
+
+        $result = $db->selectOne($id);
+        
+        if($result){
+            return $result;
+        }else{
+            return ["usuario"=>"nao encontrado"];
+        }
+
+    }
+
+    //
+    static public function ControllerUpdate($id, array $body){
+
+        $db = new Database();
+
+        $result = $db->update($id, $body);
+        
+        if($result){
+            return $result;  
+        }else{
+            return ["error"=>"database"];
+        }
+
+    }
+
+    //
     static public function ControllerDelete($id){
 
         $db = new Database();
@@ -67,7 +80,5 @@ class ControllerUser{
 
         return $result;
     }
-
-
 
 }
