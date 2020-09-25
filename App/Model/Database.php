@@ -38,23 +38,20 @@ class Database {
    public function select(){
 
        $stmt = $this->conn->prepare("SELECT * FROM users");
-
        $stmt->execute();
 
        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
        return $result;
 
    }
 
    public function selectOne($id){
-       $stmt = $this->conn->prepare("SELECT * FROM users WHERE id = :id");
 
+       $stmt = $this->conn->prepare("SELECT * FROM users WHERE id = :id");
        $stmt->bindParam(":id",$id);
        $stmt->execute();
-       $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-       //return boolean
+       $result = $stmt->fetch(PDO::FETCH_ASSOC);       
        return $result;
 
    }
@@ -62,42 +59,43 @@ class Database {
    public function create(array $param){
 
        $stmt = $this->conn->prepare("INSERT INTO users(nome, sobrenome)
-               VALUES(:nome, :sobrenome)");
+       VALUES(:nome, :sobrenome)");
         
-        $stmt->bindParam(":nome",$param["nome"]);
-        $stmt->bindParam(":sobrenome",$param["sobrenome"]);
+       $stmt->bindParam(":nome",$param["nome"]);
+       $stmt->bindParam(":sobrenome",$param["sobrenome"]);
 
-        $result = $stmt->execute();
-
-        // retorna um boolean
-        return $result;    
+       $result = $stmt->execute();
+       // return boolean
+       return $result;    
 
    }
 
    public function delete($id){
 
         $stmt = $this->conn->prepare("DELETE FROM users WHERE id = :id");
-
         $stmt->bindParam(":id",$id);
 
-        // retorna um boolean     
-        
-        $result = $stmt->execute();
-     
-
-     return $result;
-        
+        // return boolean         
+        $result = $stmt->execute();   
+        return $result;       
 
    }
 
-//    public function update($id){
+   public function update($id, array $body){
        
-//        $stmt = $this->conn->prepare("UPDATE users SET nome = :nome,
-//                 sobrenome = :sobrenome WHERE id = :id");
+       $stmt = $this->conn->prepare("UPDATE users SET nome = :nome,
+       sobrenome = :sobrenome WHERE id = :id");
 
+        $stmt->bindParam(":id",$id);
+        $stmt->bindParam(":nome", $body["nome"]);
+        $stmt->bindParam(":sobrenome", $body["sobrenome"]);
+
+       $result = $stmt->execute();
+       //return boolean
+       return $result;
 
     
-//    }
+   }
 
     
 }
