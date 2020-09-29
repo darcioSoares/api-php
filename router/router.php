@@ -14,7 +14,8 @@ $config = ['settings' => [
 $app = new App($config);
 
 
-//router
+//                  router teste
+
 $app->get('/', function($request, $response, $args) {
 
     $data = ["nome"=>"joao"];
@@ -93,6 +94,29 @@ $app->delete('/delete/{id}', function($request,$response, $args){
     }
 
 
+});
+
+
+//                 routes of application 
+
+$app->post('/createdUsers', function($request, $response, $args){
+
+    $body = $request->getParsedBody();
+
+    $data = ControllerUser::ControllerCreatedUser($body);
+
+    return $response->withJson($data,202);
+});
+
+//
+$app->post('/loginUsers', function($request, $response , $args){
+
+    $body = $request->getParsedBody();
+
+    $data = ControllerUser::ControllerLogin($body);
+
+    return $response->withJson($data, 202);
+    
 });
 
 

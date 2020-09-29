@@ -81,4 +81,36 @@ class ControllerUser{
         return $result;
     }
 
+    //////// application 
+
+    static public function ControllerCreatedUser($body){
+
+        $db = new Database();
+
+        $result = $db->createdUser($body);    
+        
+        if($result){
+            return ["criação"=>"criado com sucesso"];
+        }else{
+            return ["criação"=>"não criou o registro"];
+        };
+        
+        
+    }
+
+    static public function ControllerLogin($body){
+
+        $db = new Database();
+
+        $result = $db->loginUser($body);
+
+        if($result){
+            return $result;
+        }else{
+            return ["login"=>"email nao econtrado"];
+        }
+
+
+    }
+
 }

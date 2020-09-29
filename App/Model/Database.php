@@ -96,7 +96,43 @@ class Database {
 
     
    }
+   //////// application 
 
+   public function createdUser($body){
+
+    $stmt = $this->conn->prepare("INSERT INTO t_users(`name`, lastname, email, `password`)
+    VALUES(:NAME, :LASTNAME, :EMAIL, :PASSWORD) ");
+
+    $stmt->bindParam(":NAME" , $body['name']);
+    $stmt->bindParam(":LASTNAME",$body['lastname']);
+    $stmt->bindParam(":EMAIL", $body["email"]);
+    $stmt->bindParam(":PASSWORD", $body['password']);
+
+    $result = $stmt->execute();
+
+    return $result;
+
+   }
+
+   public function loginUser($body){
+
+       $stmt = $this->conn->prepare("SELECT email FROM t_users WHERE email = ?");
+
+       $stmt->execute(array($body['email']));
+       $result = $stmt->fetch(PDO::FETCH_ASSOC);
+       return $result;
+    
+   }
+
+   public function emailExist($body){
+       
+    $stmt = $this->conn->prepare("SELECT email FROM t_users WHERE email = ?");
+
+    $stmt->execute(array($body['email']));
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    return $result;
+   }
     
 }
 
