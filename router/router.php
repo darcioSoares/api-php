@@ -1,6 +1,5 @@
 <?php
 
-use App\Model\User;
 use Slim\App;
 use App\Model\Database;
 use App\Controller\ControllerUser;
@@ -118,6 +117,7 @@ $app->post('/loginUsers', function($request, $response , $args){
     return $response->withJson($data, 202);
     
 });
+
 
 
 // Run app
