@@ -114,25 +114,26 @@ class Database {
 
    }
 
-   public function loginUser($body){
-
-       $stmt = $this->conn->prepare("SELECT email FROM t_users WHERE email = ?");
-
-       $stmt->execute(array($body['email']));
-       $result = $stmt->fetch(PDO::FETCH_ASSOC);
-       return $result;
-    
-   }
-
-   public function emailExist($body){
+   
+   public function emailExist($password){
        
-    $stmt = $this->conn->prepare("SELECT email FROM t_users WHERE email = ?");
-
-    $stmt->execute(array($body['email']));
-    $result = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    return $result;
-   }
+       $stmt = $this->conn->prepare("SELECT email FROM t_users WHERE email = ?");
+       
+       $stmt->execute(array($password));
+       $result = $stmt->fetch(PDO::FETCH_ASSOC);
+       
+       return $result;
+    }
+    //
     
+    public function loginUser($email){
+ 
+        $stmt = $this->conn->prepare("SELECT `password` FROM t_users WHERE email = ?");
+ 
+        $stmt->execute(array($email));
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result;
+     
+    }
 }
 
