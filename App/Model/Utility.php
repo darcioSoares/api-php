@@ -45,7 +45,8 @@ class Utility {
             $this->secretIV
         );
 
-        return json_decode($decrypt,true);
+        $result = json_decode($decrypt, true);
+        return $result;
     }
 
 
