@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Model\Database;
+use App\Model\Utility;
 
 require_once('vendor/autoload.php');
 
@@ -81,36 +82,64 @@ class ControllerUser{
         return $result;
     }
 
-    //////// application 
+                    //////// application 
+                    
 
     static public function ControllerCreatedUser($body){
 
         $db = new Database();
+        $utility = new Utility();
 
-        $result = $db->createdUser($body);    
+        $password = $body["password"];
+        $email = $body["email"];
+        
+        $resultEmail = $db->emailExist($email);
+        
+        if(!$resultEmail){
+            
+            $resultPassword = $utility->Encrypt($password);
+            $body["password"] = $resultPassword;
+    
+            $result = $db->createdUser($body);    
+        }
+        
         
         if($result){
             return ["criação"=>"criado com sucesso"];
         }else{
             return ["criação"=>"não criou o registro"];
-        };
-        
+        };       
         
     }
 
     static public function ControllerLogin($body){
 
         $db = new Database();
+        $utility = new Utility();
 
-        $result = $db->loginUser($body);
+        $email = $body["email"];
 
-        if($result){
-            return $result;
+        $password = $db->loginUser($email);
+
+        if($password){
+
+            $resultPassword = $utility->Decrypt($password["password"]);
+
+            if($resultPassword){
+                if($resultPassword === $body["password"]){
+                    return ["result"=>true,"password"=>true];
+                }else{
+                    return ["error"=>"password incorrect"];
+                }
+            }   
+
         }else{
             return ["login"=>"email nao econtrado"];
         }
 
-
     }
+
+    
+
 
 }
