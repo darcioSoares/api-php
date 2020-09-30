@@ -74,13 +74,13 @@ class ControllerUser{
         $result = $db->delete($id);
 
         if($result){
-            return ["delete"=>"efetuado com sucesso","error"=>false];
+            return $result;
         }else{
             return ["delete"=>"error registro nao deletado","error"=>true];
         }
-
-        return $result;
+        
     }
+
 
                     //////// application 
                     
@@ -105,9 +105,11 @@ class ControllerUser{
         
         
         if($result){
-            return ["criação"=>"criado com sucesso"];
+            return ["criação"=>"criado com sucesso",
+                    "code"=>201];
         }else{
-            return ["criação"=>"não criou o registro"];
+            return ["criação"=>"email ja existe",
+                    "code"=>400];
         };       
         
     }
@@ -119,23 +121,31 @@ class ControllerUser{
 
         $email = $body["email"];
 
-        $password = $db->loginUser($email);
+        if($resultEmail = $db->emailExist($email)){
 
-        if($password){
-
-            $resultPassword = $utility->Decrypt($password["password"]);
-
-            if($resultPassword){
-                if($resultPassword === $body["password"]){
-                    return ["result"=>true,"password"=>true];
+            $password = $db->loginUser($email);
+    
+            if($password){
+    
+                $resultPassword = $utility->Decrypt($password["password"]);
+    
+                if($resultPassword){
+                    if($resultPassword === $body["password"]){
+                        return ["result"=>true,"password"=>true,"code"=>200];
+                    }else{
+                        return ["error"=>"password incorrect","code"=>401];
+                    }
                 }else{
-                    return ["error"=>"password incorrect"];
-                }
-            }   
-
+                    return ["error"=>'decrypt'];
+                }   
+    
+            }else{
+                return ["login"=>"email nao econtrado"];
+            }
         }else{
-            return ["login"=>"email nao econtrado"];
+            return ["error"=>"email nao existe","code"=>400];
         }
+
 
     }
 

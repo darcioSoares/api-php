@@ -77,7 +77,17 @@ class Database {
 
         // return boolean         
         $result = $stmt->execute();   
-        return $result;       
+        
+        if($result){
+            if($stmt->rowCount()){
+                return "deletado com sucesso";
+            }else{
+                return "registro não encontrado";
+            }
+
+        }else{
+            return $result;
+        }
 
    }
 
@@ -90,13 +100,27 @@ class Database {
         $stmt->bindParam(":nome", $body["nome"]);
         $stmt->bindParam(":sobrenome", $body["sobrenome"]);
 
-       $result = $stmt->execute();
        //return boolean
-       return $result;
+       $result = $stmt->execute();
+            
+      if($result){
 
-    
+         if($stmt->rowCount()){
+             return $result = "alteracao feita com sucesso";
+         }else{
+             return $result = "id não encontrado / dados ja alterado";
+         }
+
+      }else{
+          return $result;
+      }
+         
    }
-   //////// application 
+
+
+
+                //////// application 
+                
 
    public function createdUser($body){
 

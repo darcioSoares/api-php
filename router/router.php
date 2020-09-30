@@ -1,7 +1,6 @@
 <?php
 
 use Slim\App;
-use App\Model\Database;
 use App\Controller\ControllerUser;
 
 require_once('vendor/autoload.php');
@@ -13,11 +12,12 @@ $config = ['settings' => [
 $app = new App($config);
 
 
+
 //                  router teste
 
 $app->get('/', function($request, $response, $args) {
 
-    $data = ["nome"=>"joao"];
+    $data = ["funcionou"=>true];
 
     return $response->withJson($data,201);
 
@@ -96,7 +96,9 @@ $app->delete('/delete/{id}', function($request,$response, $args){
 });
 
 
+
 //                 routes of application 
+
 
 $app->post('/createdUsers', function($request, $response, $args){
 
@@ -104,7 +106,7 @@ $app->post('/createdUsers', function($request, $response, $args){
 
     $data = ControllerUser::ControllerCreatedUser($body);
 
-    return $response->withJson($data,202);
+    return $response->withJson($data,$data["code"]);
 });
 
 //
@@ -114,7 +116,7 @@ $app->post('/loginUsers', function($request, $response , $args){
 
     $data = ControllerUser::ControllerLogin($body);
 
-    return $response->withJson($data, 202);
+    return $response->withJson($data, $data["code"]);
     
 });
 
